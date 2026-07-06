@@ -1,0 +1,23 @@
+{
+  "name": "agentdoc-audit",
+  "version": "1.0.0",
+  "description": "Agent-readiness checker for docs, READMEs, runbooks, and setup guides.",
+  "type": "module",
+  "scripts": {
+    "start": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "test": "node tests/analyzer.test.mjs"
+  },
+  "keywords": [
+    "ai",
+    "documentation",
+    "agents",
+    "readme",
+    "lint"
+  ],
+  "author": "North Star Holdings",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^8.1.3"
+  }
+}
