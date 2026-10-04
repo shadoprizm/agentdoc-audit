@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AgentDoc Audit — AI Documentation Readiness Checker</title>
-    <meta name="description" content="Score docs, READMEs, and runbooks for AI agent readiness. Get concrete repairs and an exportable report." />
+    <title>AgentDoc Audit — Documentation Checks</title>
+    <meta name="description" content="Review documentation and compare commands and references with local repository files. Export findings with source lines." />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -15,7 +15,7 @@
       </a>
       <nav>
         <a href="#tool">Try It Now</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#about">Scope</a>
         <a href="https://github.com/shadoprizm/agentdoc-audit">GitHub</a>
       </nav>
     </header>
@@ -23,36 +23,36 @@
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">agentdocaudit.io is available</p>
+          <p class="eyebrow">Local documentation checks</p>
           <h1>Make your docs usable by humans and AI agents.</h1>
-          <p class="subhead">Paste a README, runbook, or setup guide. AgentDoc Audit scores installability, examples, command clarity, machine-readable instructions, and safety gaps in seconds.</p>
+          <p class="subhead">Find incomplete guidance and compare documented scripts and links with your repository. Each finding includes evidence and the areas that still need human review.</p>
           <div class="hero-actions">
             <a class="button primary" href="#tool">Try It Now</a>
             <a class="button secondary" href="https://github.com/shadoprizm/agentdoc-audit">View code</a>
           </div>
         </div>
-        <aside class="score-card" aria-label="Example score summary">
-          <span class="score-label">Sample score</span>
-          <strong>82</strong>
-          <p>Needs light repair: add env var table, clearer limits, and AGENTS.md summary.</p>
+        <aside class="score-card" aria-label="Review scope">
+          <span class="score-label">Evidence before execution</span>
+          <strong>Check</strong>
+          <p>Documented commands are never executed. Findings help you review the instructions; they do not certify readiness.</p>
         </aside>
       </section>
 
       <section class="features" aria-label="Feature highlights">
         <article>
           <span>01</span>
-          <h2>Agent-readiness scoring</h2>
-          <p>Checks quickstarts, install steps, examples, commands, warnings, ownership links, and machine-readable guidance.</p>
+          <h2>Documentation checks</h2>
+          <p>Finds quickstart commands, incomplete sections, unresolved placeholders and instructions requiring review.</p>
         </article>
         <article>
           <span>02</span>
           <h2>Repair plan</h2>
-          <p>Turns vague documentation quality into concrete edits a founder, developer, or technical writer can ship today.</p>
+          <p>Shows source lines and evidence for missing package scripts, local links and environment names.</p>
         </article>
         <article>
           <span>03</span>
           <h2>Command extraction</h2>
-          <p>Finds runnable commands inside fenced blocks so teams can see what coding agents will try first.</p>
+          <p>Extracts shell command lines, including npx, make and local scripts, without executing them.</p>
         </article>
         <article>
           <span>04</span>
@@ -78,52 +78,58 @@
 
             <div class="tool-actions">
               <label class="button secondary file-button" for="fileInput">Upload file</label>
-              <input id="fileInput" type="file" accept=".md,.txt,.markdown,.rst" />
+              <input id="fileInput" type="file" accept=".md,.txt,.markdown" />
               <button id="sampleBtn" class="button secondary" type="button">Load sample</button>
               <button id="auditBtn" class="button primary" type="button">Run audit</button>
               <button id="clearBtn" class="icon-button" type="button" aria-label="Clear input">×</button>
             </div>
+            <p id="fileStatus" role="status"></p>
+            <label for="repositoryInput">Optional local repository folder</label>
+            <input id="repositoryInput" type="file" webkitdirectory multiple />
+            <button id="clearRepository" class="button secondary" type="button">Clear repository</button>
+            <p id="repositoryStatus" role="status">No repository loaded.</p>
+            <p>Files stay in this browser. The app reads file names and selected configuration files; it excludes .env secrets, key files and dependency folders. Use the CLI for nested documentation paths.</p>
           </div>
 
           <div class="results-panel">
             <div class="score-row">
               <div>
-                <span class="score-label">Readiness score</span>
-                <strong id="scoreValue">0</strong>
+                <span class="score-label">Findings requiring review</span>
+                <strong id="findingCount">0</strong>
               </div>
-              <span id="grade" class="grade warn">Agent-hostile</span>
+              <span id="checkMode" class="grade">Text checks only</span>
             </div>
             <div id="stats" class="stats"></div>
             <ul id="checks" class="checks"></ul>
+            <h3>Not evaluated</h3>
+            <div id="coverage"></div>
 
             <h3>Repair plan</h3>
             <ol id="repairPlan" class="repair-list"></ol>
 
-            <h3>Detected commands</h3>
+            <h3>Extracted commands — not executed</h3>
             <div id="commands" class="commands"></div>
 
             <h3>Markdown report</h3>
-            <textarea id="reportOutput" readonly></textarea>
+            <textarea id="reportOutput" aria-label="Markdown report" readonly></textarea>
             <button id="downloadBtn" class="button primary" type="button">Download report</button>
           </div>
         </div>
       </section>
 
-      <section id="pricing" class="pricing">
+      <section id="about" class="pricing">
         <div class="section-heading">
-          <p class="eyebrow">pricing</p>
-          <h2>Free audit now, paid workflow later</h2>
+          <p class="eyebrow">Scope</p>
+          <h2>Free checks with evidence and explicit limits</h2>
         </div>
         <div class="pricing-grid">
           <article>
             <h3>Free</h3>
-            <strong>$0</strong>
-            <p>Browser audit, score, checklist, command extraction, and Markdown export.</p>
+            <p>Local text and repository checks, line references, command extraction, and Markdown export.</p>
           </article>
           <article class="pro">
-            <h3>Pro</h3>
-            <strong>$19/mo</strong>
-            <p>Repo scans, history, shareable client reports, AI rewrite suggestions, and PR-ready fixes.</p>
+            <h3>CLI and CI</h3>
+            <p>Run <code>npm run audit -- /path/to/repository --json</code> for structured findings. Commands, safety and deployment behavior still need independent verification.</p>
           </article>
         </div>
       </section>
