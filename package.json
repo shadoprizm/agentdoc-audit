@@ -1,12 +1,13 @@
 {
   "name": "agentdoc-audit",
   "version": "1.0.0",
-  "description": "Agent-readiness checker for docs, READMEs, runbooks, and setup guides.",
+  "description": "Local documentation checks with optional repository evidence; commands are never executed.",
   "type": "module",
   "scripts": {
     "start": "vite --host 0.0.0.0",
     "build": "vite build",
-    "test": "node tests/analyzer.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "audit": "node bin/audit.mjs"
   },
   "keywords": [
     "ai",

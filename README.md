@@ -1,61 +1,84 @@
 # AgentDoc Audit
 
-AgentDoc Audit scores READMEs, runbooks, setup guides, AGENTS.md files, and client documentation for AI-agent readiness. It checks whether docs are installable, scannable, command-rich, explicit about environment variables, and safe for coding agents to follow.
-
-## Who It Is For
-
-- Indie SaaS founders who want their docs to work with AI coding tools
-- Technical writers selling AI-readiness cleanup services
-- Agencies converting client docs into agent-friendly runbooks
-- Developers shipping repos that Codex, Claude Code, OpenClaw, and similar tools can use reliably
-
-## Features
-
-- Browser-based documentation audit
-- 100-point agent-readiness score
-- Concrete repair checklist
-- Runnable command extraction
-- Markdown report export
-- Dark North Star Holdings landing page
+Local documentation checks with optional evidence from repository files.
+AgentDoc extracts commands, flags incomplete guidance and compares documented
+scripts, file references and environment names with supplied configuration.
+It does not execute commands or certify agent readiness, safety or deployment.
 
 ## Quickstart
 
-```bash
-npm install
-npm run start
+Requires Node.js 22.12+ or 24+ and npm.
+
+```sh
+npm ci
+npm start
 ```
 
-Open the local Vite URL and paste a README or upload a Markdown/text file.
+Paste Markdown or upload a `.md`, `.markdown` or `.txt` file. Optionally select a
+local repository folder. Everything stays in the browser; no API key, account
+or backend is used.
+
+## Repository CLI
+
+```sh
+npm run audit -- /path/to/repository
+npm run audit -- /path/to/repository --doc docs/setup.md --json
+```
+
+Use the CLI for nested documentation paths. Browser uploads use the selected
+document's filename; a standalone file upload does not retain its parent path.
+
+Example: if a README contains `npm run verify` but its package.json has no
+`verify` script, the report identifies the README line and the missing script.
+An existing script is marked `verified` only for its presence in the manifest.
+Its behavior is never executed or certified.
+
+The CLI returns 0 when no review findings are reported, 1 when findings need
+review, and 2 for invalid inputs or unreadable/oversized files. Exit 0 does not
+establish that the repository is ready for an agent or release.
+
+## Checks and scope
+
+- Quickstart, setup, example and limitation sections with actual content.
+- Unresolved prose placeholders and selected destructive commands/instructions.
+- Fenced shell command extraction, including npx, make and local script paths.
+- Simple package-script definitions, Make targets and referenced command files.
+- Local Markdown links relative to the selected document (fragments unchecked).
+- Exact environment names from `.env.example`, without exporting their values.
+- Source line references, JSON output and Markdown reports with explicit limits.
+
+Observed content is a heuristic. Repository checks verify file or definition
+presence, not semantic correctness. Compound commands, complex shell context,
+dynamic Make targets and unsupported command forms remain not evaluated.
+Instructions still require operational and human review. AGENTS.md discovery
+depends on the actual agent configuration; mentioning a filename does not
+establish that the file will be loaded.
+
+Only Markdown and plain text are supported. References shown inside code blocks
+may need manual review. Linked directories can be checked from the inventory;
+web URLs and link fragments are not fetched or validated.
+
+## Privacy and limits
+
+Repository mode inventories file names and reads package.json, Makefile and
+`.env.example` files. It excludes dependency/build folders, `.git`, `.env` and
+other `.env.*` files except `.env.example`, and `.pem`, `.key`, `.p12`, `.pfx`
+files. The CLI skips symlinks. Configuration values are not printed in findings.
+Keep actual credentials out of `.env.example`.
+
+Select a bounded repository/package: the inventory stops with an error above
+10,000 entries. Configuration and document files are limited to 1 MB.
+Nothing is uploaded, and no documented command is executed.
 
 ## Validation
 
-```bash
+```sh
 npm test
 npm run build
 ```
 
-## Deployment
+Tests cover invented commands, placeholders, destructive guidance, code fences,
+local links, environment-name checks, nested commands and read-only CLI behavior.
+The Vite production bundle is written to `dist/`; Vercel uses `vercel.json`.
 
-```bash
-vercel --prod --yes --name agentdoc-audit
-```
-
-## Monetization
-
-Free tier: browser audit, checklist, command extraction, and Markdown export.
-
-Pro tier: $19/month for repo scans, saved history, shareable client reports, AI rewrite suggestions, and PR-ready fixes.
-
-Year-1 target:
-
-- Conservative: 25 Pro users x $19 x 12 = $5,700 ARR
-- Moderate: 100 Pro users x $19 x 12 = $22,800 ARR
-- Stretch: 300 Pro users x $19 x 12 = $68,400 ARR
-
-## Recommended Domain
-
-`agentdocaudit.io` checked available by RDAP 404 plus no DNS records on 2026-07-06. Do not purchase without operator approval.
-
-## North Star Holdings
-
-Built by North Star Holdings as a lightweight AI documentation readiness product.
+Built by North Star Holdings.

@@ -411,6 +411,16 @@ footer a {
   color: var(--accent);
 }
 
+#coverage, #repositoryStatus, #fileStatus {
+  overflow-wrap: anywhere;
+}
+
+#coverage p, #fileStatus, #repositoryStatus {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
 @media (max-width: 900px) {
   .hero,
   .tool-grid,
